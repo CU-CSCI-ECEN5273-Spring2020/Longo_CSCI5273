@@ -1,0 +1,438 @@
+node n1 {
+    type router
+    model router
+    network-config {
+	hostname n1
+	!
+	interface eth1
+	 ip address 10.0.2.1/24
+	 ipv6 address 2001:2::1/64
+	 mac address 00:00:00:aa:00:02
+	!
+	interface eth0
+	 ip address 10.0.0.1/24
+	 ipv6 address 2001::1/64
+	 mac address 00:00:00:aa:00:00
+	!
+    }
+    canvas c1
+    iconcoords {194.0 266.0}
+    labelcoords {194.0 298.0}
+    services {OSPFv2 OSPFv3 zebra IPForward SSH UserDefined}
+    interface-peer {eth0 n2}
+    interface-peer {eth1 n3}
+    custom-config {
+	custom-config-id service:UserDefined:setup.sh
+	custom-command setup.sh
+	config {
+	foo=`dirname $SESSION_FILENAME`
+	sh $foo/generalSetup.sh
+	}
+    }
+    custom-config {
+	custom-config-id service:UserDefined
+	custom-command UserDefined
+	config {
+	dirs=('/var/ion',)
+	files=('setup.sh',)
+	startidx=0
+	cmdup=('sh ./setup.sh',)
+	cmddown=()
+	cmdval=()
+	meta=Customize this service to do anything upon startup.
+	starttime=0
+	}
+    }
+}
+
+node n2 {
+    type router
+    model router
+    network-config {
+	hostname n2
+	!
+	interface eth0
+	 ip address 10.0.0.2/24
+	 ipv6 address 2001::2/64
+	 mac address 00:00:00:aa:00:01
+	!
+    }
+    canvas c1
+    iconcoords {74.0 105.0}
+    labelcoords {74.0 137.0}
+    services {OSPFv2 OSPFv3 zebra IPForward SSH UserDefined}
+    interface-peer {eth0 n1}
+    custom-config {
+	custom-config-id service:UserDefined:setup.sh
+	custom-command setup.sh
+	config {
+	foo=`dirname $SESSION_FILENAME`
+	sh $foo/generalSetup.sh
+	}
+    }
+    custom-config {
+	custom-config-id service:UserDefined
+	custom-command UserDefined
+	config {
+	dirs=('/var/ion',)
+	files=('setup.sh',)
+	startidx=0
+	cmdup=('sh ./setup.sh',)
+	cmddown=()
+	cmdval=()
+	meta=Customize this service to do anything upon startup.
+	starttime=0
+	}
+    }
+}
+
+node n4 {
+    type router
+    model mdr
+    network-config {
+	hostname n4
+	!
+	interface eth0
+	 ipv6 address 2001:0::1/128
+	 ip address 10.3.3.1/32
+	!
+    }
+    canvas c1
+    iconcoords {520.0 120.0}
+    labelcoords {520.0 152.0}
+    services {zebra OSPFv3MDR IPForward SSH UserDefined}
+    custom-config {
+	custom-config-id service:UserDefined:setup.sh
+	custom-command setup.sh
+	config {
+	foo=`dirname $SESSION_FILENAME`
+	sh $foo/generalSetup.sh
+	}
+    }
+    custom-config {
+	custom-config-id service:UserDefined
+	custom-command UserDefined
+	config {
+	dirs=('/var/ion',)
+	files=('setup.sh',)
+	startidx=0
+	cmdup=('sh ./setup.sh',)
+	cmddown=()
+	cmdval=()
+	meta=Customize this service to do anything upon startup.
+	starttime=0
+	}
+    }
+    interface-peer {eth0 n5}
+}
+
+node n3 {
+    type router
+    model mdr
+    network-config {
+	hostname n3
+	!
+	interface eth0
+	 ipv6 address 2001:0::2/128
+	 ip address 10.3.3.2/32
+	!
+	interface eth1
+	 ip address 10.0.2.2/24
+	 ipv6 address 2001:2::2/64
+	 mac address 00:00:00:aa:00:03
+	!
+    }
+    canvas c1
+    iconcoords {360.0 162.0}
+    labelcoords {360.0 194.0}
+    services {OSPFv2 OSPFv3 OSPFv3MDR zebra IPForward UserDefined}
+    interface-peer {eth1 n1}
+    custom-config {
+	custom-config-id service:UserDefined:setup.sh
+	custom-command setup.sh
+	config {
+	foo=`dirname $SESSION_FILENAME`
+	sh $foo/generalSetup.sh
+	}
+    }
+    custom-config {
+	custom-config-id service:UserDefined
+	custom-command UserDefined
+	config {
+	dirs=('/var/ion',)
+	files=('setup.sh',)
+	startidx=0
+	cmdup=('sh ./setup.sh',)
+	cmddown=()
+	cmdval=()
+	meta=Customize this service to do anything upon startup.
+	starttime=0
+	}
+    }
+    interface-peer {eth0 n5}
+}
+
+node n5 {
+    type wlan
+    network-config {
+	hostname wlan5
+	!
+	interface wireless
+	 ip address 10.0.1.0/32
+	 ipv6 address 2001:0::0/128
+	!
+	mobmodel
+	coreapi
+	basic_range
+	ns2script
+	!
+    }
+    custom-config {
+	custom-config-id basic_range
+	custom-command {3 3 9 9 9}
+	config {
+	range=275
+	bandwidth=54000000
+	jitter=0
+	delay=20000
+	error=0
+	}
+    }
+    custom-config {
+	custom-config-id ns2script
+	custom-command {10 3 11 10 10 10 10 10}
+	config {
+	file=/home/core/.core/configs/NASA_DTN_DEV_KIT/retransmission_test/30-30.scen
+	refresh_ms=250
+	loop=1
+	autostart=0.0
+	map=
+	script_start=
+	script_pause=
+	script_stop=
+	}
+    }
+    canvas c1
+    iconcoords {524.0 299.0}
+    labelcoords {524.0 331.0}
+    interface-peer {e0 n4}
+    interface-peer {e1 n3}
+}
+
+link l1 {
+    nodes {n1 n2}
+}
+
+link l4 {
+    nodes {n1 n3}
+}
+
+link l2 {
+    nodes {n5 n4}
+}
+
+link l3 {
+    nodes {n5 n3}
+}
+
+annotation a1 {
+    iconcoords {27.0 70.0}
+    type text
+    label {Ground Station}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    canvas c1
+}
+
+annotation a2 {
+    iconcoords {643.0 130.0}
+    type text
+    label {Satellite}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    canvas c1
+}
+
+annotation a3 {
+    iconcoords {126.0 328.0}
+    type text
+    label {BP / LTP testing}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    canvas c1
+}
+
+annotation a4 {
+    type text
+    iconcoords {315.0 87.0}
+    label {}
+    canvas c1
+}
+
+annotation a5 {
+    iconcoords {136.0 14.0}
+    type text
+    label {Bping is set to run from node 2->4 automatically.}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    canvas c1
+}
+
+annotation a6 {
+    iconcoords {136.0 35.0}
+    type text
+    label {An Xterm will pop up after 15 seconds, and the bping will start.}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    canvas c1
+}
+
+annotation a8 {
+    iconcoords {136.0 56.0}
+    type text
+    label {Configured for a network manager on node n2.}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    canvas c1
+}
+
+annotation a9 {
+    type text
+    iconcoords {231.0 108.0}
+    label {}
+    canvas c1
+}
+
+annotation a10 {
+    iconcoords {456.0 154.0 524.0 194.0}
+    type oval
+    label {LTP}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    color #CFCFFF
+    width 0
+    border black
+    canvas c1
+}
+
+annotation a11 {
+    iconcoords {98.0 174.0 177.0 206.0}
+    type oval
+    label {UDP}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    color #CFCFFF
+    width 0
+    border black
+    canvas c1
+}
+
+annotation a12 {
+    iconcoords {258.0 200.0 321.0 230.0}
+    type oval
+    label {TCP}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    color #CFCFFF
+    width 0
+    border black
+    canvas c1
+}
+
+canvas c1 {
+    name {Canvas1}
+}
+
+hook 3:instantiation_hook.sh {
+#!/bin/sh
+# session hook script; write commands here to execute on the host at the
+# specified state
+rm -f /tmp/ionrcdate
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+hook 4:runtime_hook.sh {
+#!/bin/sh
+# session hook script; write commands here to execute on the host at the
+# specified state
+
+echo `date` "Starting run" > /tmp/baseLog.txt
+
+pycore=`ls /tmp | grep pycore`
+echo `date` "pycore instance is: $pycore" >> /tmp/baseLog.txt
+
+#
+# Set up X tunnels to all nodes.
+# on each node, export DISPLAY=localhost:10.0
+#
+sleep 5 && ssh -X -t -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/core/.ssh/DTNDevKit core@127.0.0.1 "export DISPLAY=:0 && xterm -geometry 0x0 -e /home/core/.core/configs/NASA_DTN_DEV_KIT/common/setupSSH.sh" &
+
+sleep 10 && ssh -X -t -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/core/.ssh/DTNDevKit core@127.0.0.1 "export DISPLAY=:0 && xterm -geometry 10x10 -e /home/core/.core/configs/NASA_DTN_DEV_KIT/common/bundleCounts.sh" &
+}
+
+hook 6:shutdown_hook.sh {
+#!/bin/sh
+# session hook script; write commands here to execute on the host at the
+# specified state
+
+ps auxww | grep bundleCounts | awk '{print $2}' | xargs kill -9
+ps auxww | grep runcg2 | awk '{print $2}' | xargs kill -9
+
+ps auxww | grep setupSSH | awk '{print $2}' | xargs kill -9
+}
+
+option global {
+    interface_names yes
+    ip_addresses yes
+    ipv6_addresses no
+    node_labels yes
+    link_labels yes
+    show_api no
+    background_images no
+    annotations yes
+    grid yes
+    traffic_start 0
+}
+
+option session {
+    controlnet=192.168.250.0/24
+    controlnet0=
+    controlnet1=
+    controlnet2=
+    controlnet3=
+    controlnet_updown_script=
+    enablerj45=1
+    enablesdt=0
+    preservedir=0
+    sdturl=tcp://127.0.0.1:50000/
+}
+

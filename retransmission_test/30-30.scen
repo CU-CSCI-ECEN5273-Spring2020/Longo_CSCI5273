@@ -1,0 +1,39 @@
+#BPI Satellite Testing:  30 seconds on, 30 seconds off
+
+$node_(4) set X_ 500.0
+$node_(4) set Y_ 110.0
+$node_(4) set Z_ 0.00
+
+$ns_ at 00.00 "$node_(4) setdest 700.0 710.0 17.0"
+$ns_ at 30.00 "$node_(4) setdest 500.0 110.0 7.0"
+
+
+
+#$ns_ at 60.00 "$node_(4) setdest 700.0 210.0 7.0"
+#$ns_ at 90.00 "$node_(4) setdest 500.0 110.0 7.0"
+#
+#$ns_ at 120.00 "$node_(4) setdest 700.0 210.0 7.0"
+#$ns_ at 150.00 "$node_(4) setdest 500.0 110.0 7.0"
+#
+#$ns_ at 180.00 "$node_(4) setdest 700.0 210.0 7.0"
+#$ns_ at 210.00 "$node_(4) setdest 500.0 110.0 7.0"
+#
+#$ns_ at 240.00 "$node_(4) setdest 700.0 210.0 7.0"
+#$ns_ at 270.00 "$node_(4) setdest 500.0 110.0 7.0"
+#
+#$ns_ at 300.00 "$node_(4) setdest 700.0 210.0 7.0"
+#$ns_ at 330.00 "$node_(4) setdest 500.0 110.0 7.0"
+#
+#$ns_ at 360.00 "$node_(4) setdest 700.0 210.0 7.0"
+#$ns_ at 390.00 "$node_(4) setdest 500.0 110.0 7.0"
+#
+#$ns_ at 420.00 "$node_(4) setdest 700.0 210.0 7.0"
+#$ns_ at 450.00 "$node_(4) setdest 500.0 110.0 7.0"
+#
+#$ns_ at 480.00 "$node_(4) setdest 700.0 210.0 7.0"
+#$ns_ at 510.00 "$node_(4) setdest 500.0 110.0 7.0"
+#
+#$ns_ at 540.00 "$node_(4) setdest 700.0 210.0 7.0"
+#$ns_ at 570.00 "$node_(4) setdest 500.0 110.0 7.0"
+#
+
